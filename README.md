@@ -46,7 +46,7 @@
 
 ## 安裝
 
-先到 [Releases 頁面](https://github.com/DraftingDreamer/FontCilantroCode/releases/latest)下載 `CilantroCodeMono-Regular.ttf`。
+先到 [Releases 頁面](https://github.com/DraftingDreamer/FontCilantroCode/releases/latest)下載 `CilantroCodeMono-Regular.ttf` 與 `CilantroCodeMono-Bold.ttf`（兩個都裝，編輯器才有粗體可用）。
 
 | 系統 | 安裝方式 |
 |------|----------|
@@ -57,7 +57,7 @@
 Linux 一行安裝：
 
 ```bash
-mkdir -p ~/.local/share/fonts && cp CilantroCodeMono-Regular.ttf ~/.local/share/fonts/ && fc-cache -fv
+mkdir -p ~/.local/share/fonts && cp CilantroCodeMono-*.ttf ~/.local/share/fonts/ && fc-cache -fv
 ```
 
 ## 在編輯器裡使用
@@ -109,7 +109,7 @@ code, pre {
 | 項目 | 內容 |
 |------|------|
 | 版本 | 1.000 |
-| 字重 | Regular（400）一款 |
+| 字重 | Regular（400）、Bold（700） |
 | 格式 | TrueType（`.ttf`），unitsPerEm = 1000 |
 | 字符數 | 15,618 個 glyph／12,762 個 Unicode 碼位 |
 | 寬度 | 漢字 1000、拉丁與符號 500（精準 2:1） |
@@ -117,13 +117,26 @@ code, pre {
 | 其他覆蓋 | 注音符號 43、日文假名 187、希臘 54、西里爾 66、Latin-1 補充 95 |
 | 授權 | SIL Open Font License 1.1（保留字型名稱：`Cilantro Code`、`香菜碼`） |
 
+## 關於 Bold
+
+![香菜碼等寬 Bold 樣張](CilantroCodeMono-Bold-specimen.png)
+
+Bold 的英數字是**真正的 Bold 字重**——Red Hat Mono 是可變字型，直接取 `wght=700` 的實例，不是合成的。
+
+中文則是**輪廓膨脹合成**的，這點必須誠實交代。原因是芫荽 Iansui 沒有更粗的字重可用：它本身就是以 Klee One 的 SemiBold 為底製作的（原 Regular 偏細），上游沒有更粗的來源可接。
+
+合成的做法是把字形複製多份、沿橢圓周平移後取聯集。用橢圓而非正圓，是因為「鬱」「囊」這類密筆畫字糊掉的主因，是上下堆疊的橫畫之間的空隙被填滿——橢圓筆刷讓豎畫加粗較多、橫畫間隙少損失，在 15px 這種實際編輯字級下才保得住可讀性。膨脹後超出字身框的字，另以水平線性縮放壓回框內，確保 2:1 的等寬對齊不被破壞。
+
+結論：Bold 在小字級下清晰可用，但它終究是合成的，筆鋒與轉折的細節不如原生設計的粗體字重。介意的話，把 Bold 留給英數與語法高亮就好。
+
 ## 已知限制
 
 老實交代，免得你裝了才失望：
 
-- **只有 Regular 一個字重。** 沒有 Bold、沒有 Italic。編輯器裡的粗體與斜體會由系統即時合成（或退回其他字型），效果不一定理想。
+- **沒有 Italic。** 編輯器裡的斜體會由系統即時合成，效果不一定理想。
+- **Bold 的中文是合成加粗**（見上一節），不是原生設計的字重。
 - **沒有 programming ligature。** `=>`、`!=`、`->` 不會合併成連字符號。（如果你本來就討厭 coding ligature，這反而是好消息。）
-- **檔案 9.5 MB。** 完整 CJK 字型的合理體積，但直接當網頁字型偏大，建議自行做 subset 或轉 WOFF2。
+- **檔案偏大。** Regular 9.5 MB、Bold 19.8 MB（合成加粗會讓輪廓控制點增為約 2.3 倍）。完整 CJK 字型體積本來就大，但直接當網頁字型偏大，建議自行做 subset 或轉 WOFF2。
 - **未涵蓋罕用字。** CJK 擴充 B 區以後的字未收錄，繼承自芫荽的字符集範圍。
 
 歡迎到 [Issues](https://github.com/DraftingDreamer/FontCilantroCode/issues) 回報字符問題或提出建議。
@@ -189,8 +202,10 @@ It merges two OFL-licensed fonts: **[Iansui](https://github.com/ButTaiwan/iansui
 - Highly legible Latin from Red Hat Mono: slashed zero, disambiguated `1` / `l` / `I`
 - SIL Open Font License 1.1 — free for commercial use
 
-**Known limitations:** Regular weight only (no Bold or Italic), no programming ligatures, 9.5 MB file size.
+**Weights:** Regular (400) and Bold (700). The Bold's Latin is a genuine `wght=700` instance of the Red Hat Mono variable font, but **the CJK is synthesised** by outline dilation — Iansui has no heavier weight to draw from, since it is itself built on Klee One's SemiBold. The dilation uses an elliptical brush (wider horizontally than vertically) so that vertical strokes gain more weight while the gaps between stacked horizontal strokes survive, which is what keeps dense characters legible at editor sizes.
 
-**Install:** download the `.ttf` from [Releases](https://github.com/DraftingDreamer/FontCilantroCode/releases/latest), then set your editor font family to `Cilantro Code Mono`.
+**Known limitations:** no Italic, no programming ligatures, synthesised CJK bold, and large files (9.5 MB Regular / 19.8 MB Bold).
+
+**Install:** download the `.ttf` files from [Releases](https://github.com/DraftingDreamer/FontCilantroCode/releases/latest), then set your editor font family to `Cilantro Code Mono`.
 
 **Keywords:** Traditional Chinese monospace font · CJK coding font · duospace · 繁體中文等寬字型 · 程式設計字型 · Taiwan · Iansui · Red Hat Mono · SIL OFL
